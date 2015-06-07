@@ -4,11 +4,7 @@ var path = require('path');
 var Sequelize = require('sequelize');
 
 //Usar BBDD SQLite:
-<<<<<<< HEAD
 var sequelize = new Sequelize(null, null, null,
-=======
-var sequelize = New Sequelize(null, null, null,
->>>>>>> 5c2f35ffd2f12f52d13e9fa7fcf6ba1163601f72
                         {dialect: "sqlite", storage: "quiz.sqlite"}
                      );
 
