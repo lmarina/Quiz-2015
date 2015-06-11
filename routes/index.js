@@ -3,6 +3,12 @@ var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
 
+// Pagina de entrada (home page)
+router.get('/', function(req,res) {
+    res.render('index',{title: 'Quiz'});
+});
+
+
 // Definicion de rutas de  /quizes
 
 router.get('/quizes',                      quizController.index);
