@@ -1,24 +1,5 @@
 var models = require('../models/models.js')
 
-/*
-//Get /quizes/question
-exports.question = function(req,res) {
-   models.Quiz.findAll().success(function(quiz) {
-   res.render('quizes/question', {pregunta: quiz[0].pregunta})
-   })
-};
-
-//GET /quizes/answer
-exports.answer = function(req,res) {
-    models.Quiz.findAll().success(function(quiz){
-    if (req.query.respuesta === quiz[0].respuesta) {
-        res.render('quizes/answer', {respuesta: 'Correcto'});
-    } else {
-        res.render('quizes/answer', {respuesta: 'Incorrecto'});
-    }
-})
-*/
-
 
 //Autoload - Factoriza el código si ruta incluye: quizId
 exports.load = function(req, res, next, quizId) {
@@ -63,4 +44,23 @@ exports.answer = function(req,res){
        resultado = 'correcto';
     }
     res.render('quizes/answer', { quiz: req.quiz, respuesta:resultado});
+};
+
+
+// GET /quizes/new
+
+exports.new = function(req,res) {
+     var quiz = models.Quiz.build( //Crea Objeto Quiz
+     {pregunta:"Pregunta", respuesta:"Respuesta"}
+   );
+   res.render('quizes/new', {quiz: quiz});
+};
+
+// POST /quizes/create
+exports.create = function(req,res){
+  var quiz = models.Quiz.build( req.body.quiz);
+//Guarda en DB los campos pregunta y respuesta de quiz
+  quiz.save({fields:["pregunta","respuesta"]}).then(function(){
+    res.redirect('/quizes');
+  }) // Redireccion Http (URL relativo) lista de preguntas
 };

@@ -6,7 +6,8 @@
      <tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
   <% } %>
   </table>
-
+  <p>
+  <a href="/quizes/new"><button type="button">Crear Pregunta</button></a>
   <form method="get" action="/quizes">
     <p> todas las preguntas con la palabra:  </p>
     <input type="text" name="search" value="respuesta" />
