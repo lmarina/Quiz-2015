@@ -1,28 +1,10 @@
 var models = require('../models/models.js')
 
-/*
-exports.create = function(req, res){
-  var quiz = models.Quiz.build( req.body.quiz);
-//Guarda en DB los campos pregunta y respuesta de quiz
-  var errors = quiz.validate()
-
-  console.log(errors);
-
-  if (errors){
-         var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
-         for (var prop in errors) errores[i++]={message: errors[prop]};
-         res.render('quizes/new', {quiz: quiz, errors: errores});
-       } else {
-           quiz  //save: Guarda en DB campos pregunta y respuesta de Quiz
-          .save({fields: ["pregunta","respuesta","contenido"]})
-          .then( function(){ res.redirect('/quizes')})
-       } // Redireccion Http (URL relativo) lista de preguntas
-};
-*/
-
 //Autoload - Factoriza el código si ruta incluye: quizId
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.find(quizId).then(
+  models.Quiz.find({where: {id: Number(quizId)},
+                    include: [{model:models.Comment}]
+                    }).then(
     function(quiz) {
       if (quiz) {
         req.quiz = quiz;

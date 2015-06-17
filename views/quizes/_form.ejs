@@ -8,7 +8,7 @@
 <label for="resp" class="rem">Contenido:</label>
 
 <select name ="quiz[contenido]" >
-       <% if (quiz.contenido !== "Otro") {%>
+       <% if (quiz.contenido !== "Otro" && quiz.quizId > 0) {%>
        <option value="<%= quiz.contenido %>" selected><%= quiz.contenido %></option>
        <% } %>
        <option value="Otro">Otro</option>
