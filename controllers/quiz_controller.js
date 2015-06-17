@@ -76,15 +76,26 @@ exports.new = function(req,res) {
 };
 
 // POST /quizes/create
-
 /* Modificaciones al codigo original por fallas de la version de Serialize */
+/* Vuelta al codigo original */
 exports.create = function(req, res){
   var quiz = models.Quiz.build( req.body.quiz);
+
   //save: Guarda en DB campos pregunta y respuesta de Quiz
-   quiz.save({fields: ["pregunta","respuesta","contenido"]}).then( function(){
-     res.redirect('/quizes');
-   })
-     };
+   quiz
+   .validate()
+   .then(
+      function(err) {
+         if (err) {
+           res.render('quizes/new', {quiz:quiz, errors: err.errors});
+         } else {
+            quiz
+            .save({fields: ["pregunta","respuesta","contenido"]})
+            .then( function(){ res.redirect('/quizes')});
+          } // res.redirect: redireccion HTTP a la lista de pregunta
+        }
+      );
+   };
 
 // GET /quizes/:id/edit
 exports.edit =  function(req, res){
