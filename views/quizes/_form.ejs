@@ -7,6 +7,11 @@
 
 <label for="resp" class="rem">Contenido:</label>
 
+<% if (quiz.contenido !== "contenido") {%>
+<%= quiz.contenido %>
+<% } %>
+<br>
+
 <select name ="quiz[contenido]" >
        <% if (quiz.contenido !== "Otro" && quiz.quizId > 0) {%>
        <option value="<%= quiz.contenido %>" selected><%= quiz.contenido %></option>
