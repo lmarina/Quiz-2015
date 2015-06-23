@@ -12,8 +12,8 @@ router.get('/', function(req,res) {
 
 
 //Autoload de comandos con :quizId
-
 router.param('quizId',                     quizController.load);
+router.param('commentId',                  commentController.load);
 
 //Definicion de rutas de session
 router.get('/login',                       sessionController.new); //Formulario login
@@ -35,6 +35,10 @@ router.delete('/quizes/:quizId(\\d+)',     sessionController.loginRequired, quiz
 
 router.get('/quizes/:quizId(\\d+)/comments/new',   commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments',    commentController.create);
+// GET funciona, pero el interfaz uniforme indica PUT en el caso acontinuacion
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',
+                                      sessionController.loginRequired,commentController.publish);
+
 
 // Definicion de rutas de autor
 router.get('/author', function(req, res){
