@@ -41,16 +41,41 @@ app.use(function(req, res, next){
  }
   //Hacer visible req.session en las vistas
 
- console.log(req.session);
+ //console.log(req.session);
  res.locals.session = req.session;
- console.log('Paso por res.locals.session');
- console.log(res.locals.session);
+
+ //console.log('Paso por res.locals.session');
+ //console.log(res.locals.session);
+
+ res.locals.foo = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(14,16);
+ res.locals.Desconectar = "False";
+ console.log('Paso por res.locals.foo');
+ console.log(res.locals.foo);
+
  next();
 });
 
-console.log('Despues del Helper Dinamico');
+
+app.use(function(req, res, next) {
+
+var tiempo_inactivo;
+
+req.session.t1 = req.session.t2 || 0;
+req.session.t2 = new Date().getTime();
+tiempo_inactivo = req.session.t2-req.session.t1;
+console.log('**** Tiempo Inactivo **** :'+tiempo_inactivo);
+
+if((req.session.user) && (tiempo_inactivo > 1000)){
+console.log("***** ***** Excedido tiempo de sesión: " + (tiempo_inactivo/1000) + " s");
+delete req.session.user;
+res.redirect(req.session.redir);
+}
+next();
+});
+
 
 app.use('/', routes);
+
 //app.use('/users', users);
 
 // catch 404 and forward to error handler
