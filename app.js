@@ -31,9 +31,10 @@ app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-console.log('Paso  antes del Helper Dinamico');
 
 //Helpers dinamicos
+
+
 app.use(function(req, res, next){
   //Guardar path en session.redir para despues de login
  if (!req.path.match(/\/login|\/logout/)){
@@ -44,31 +45,19 @@ app.use(function(req, res, next){
  //console.log(req.session);
  res.locals.session = req.session;
 
- //console.log('Paso por res.locals.session');
- //console.log(res.locals.session);
-
- res.locals.foo = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(14,16);
- res.locals.Desconectar = "False";
- console.log('Paso por res.locals.foo');
- console.log(res.locals.foo);
-
  next();
 });
 
 
+//Original de Albert Vila
+
 app.use(function(req, res, next) {
-
-var tiempo_inactivo;
-
-req.session.t1 = req.session.t2 || 0;
-req.session.t2 = new Date().getTime();
-tiempo_inactivo = req.session.t2-req.session.t1;
-console.log('**** Tiempo Inactivo **** :'+tiempo_inactivo);
-
-if((req.session.user) && (tiempo_inactivo > 1000)){
-console.log("***** ***** Excedido tiempo de sesión: " + (tiempo_inactivo/1000) + " s");
+if (req.session.user) {
+if (Date.now() - req.session.user.lastRequestTime > 1*60*1000) {
 delete req.session.user;
-res.redirect(req.session.redir);
+} else {
+req.session.user.lastRequestTime = Date.now();
+}
 }
 next();
 });
