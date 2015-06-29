@@ -24,7 +24,6 @@ exports.create = function(req,res){
      var login = req.body.login;
      var password = req.body.password;
 
-     console.log("Post create login:"+res.locals.foo);
 
     //var tiempoController = require('./time_controller');
 
