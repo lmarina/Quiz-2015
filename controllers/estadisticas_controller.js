@@ -7,14 +7,12 @@ exports.listar = function(req, res) {
     var instancia2 = models.Comment;
 
     // Funciona Cuenta de Cuantos Quizes
-    /*
-    instancia1.count().then(function(c){ console.log("There are "+c+" registers for Quiz")});
-    */
 
-    // Funciona Cuenta de Cuantos Commentarios
-    /*
-    instancia2.count().then(function(d){ console.log("There are "+d+" registers for Comments")});
-    */
+    instancia1.count().then(function(c){ console.log("Hay "+c+" Registros de Preguntas")});
+        // Funciona Cuenta de Cuantos Commentarios
+
+    instancia2.count().then(function(d){ console.log("Hay "+d+" Registros de Comentarios")});
+
 
     // Funciona Cuenta de comentarios por preguntas
     /*
@@ -36,25 +34,28 @@ exports.listar = function(req, res) {
     })
 */
 
-  // Inner Join entre Quizes y Comentarios
+  //  Quizes y Comentarios
+  // Propiedad required para Inner Join :true
 
-    instancia1.findAll({include: [{model:instancia2, required:true}]}).then(function(quizes){
+    instancia1.findAll({include: [{model:instancia2, required:false}]}).then(function(quizes){
       // Convertirlo a objeto Json
        var Ajson = JSON.stringify(quizes);
        var Dejson = JSON.parse(Ajson);
 
-      // Contar numero de comentarios totales
+      // Contar numero de preguntas sin comentarios ojo opcional console.log(Dejson);
 
         var x; newcount = 0;
         for (x = 0; x < Object.keys(Dejson).length; x++){
 
-            for (Comments in Dejson[x].Comments) {
+        if (Dejson[x].Comments.length === 0) {
+          //  for (Comments in Dejson[x].Comments) {
                 newcount++;
-            }
+
+            //}
+          }
         }
 
-        console.log(newcount);
-
+      console.log("Hay " + newcount + " Preguntas Sin respuestas");
     //res.render('views/estadisticas.ejs',{errors: errors});
     //res.redirect("/estadisticas.ejs");
     })
