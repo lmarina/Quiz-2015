@@ -8,34 +8,16 @@ exports.listar = function(req, res) {
 
     // Funciona Cuenta de Cuantos Quizes
 
-    instancia1.count().then(function(c){ console.log("Hay "+c+" Registros de Preguntas")});
+   instancia1.count().then(function(c){console.log(c)});
         // Funciona Cuenta de Cuantos Commentarios
 
-    instancia2.count().then(function(d){ console.log("Hay "+d+" Registros de Comentarios")});
 
-
-    // Funciona Cuenta de comentarios por preguntas
-    /*
-    instancia2.count({ where: {QuizId: 1}}).then(function(i){ console.log("There are "+i+" i")});
-    instancia2.count({ where: {QuizId: 2}}).then(function(j){ console.log("There are "+j+" j")});
-    instancia2.count({ where: {QuizId: 3}}).then(function(k){ console.log("There are "+k+" k")});
-    */
-
-    // Funciona
-    /*
-    instancia1.all().then(function(projects) {
-          console.log(projects);
-    })
-    */
-
-/*
-    instancia1.findAll({include:instancia2}).then(function(comments){
-      console.log(JSON.stringify(comments))
-    })
-*/
+    var c2 = instancia2.count().then(function(d){ return d});
 
   //  Quizes y Comentarios
   // Propiedad required para Inner Join :true
+
+
 
     instancia1.findAll({include: [{model:instancia2, required:false}]}).then(function(quizes){
       // Convertirlo a objeto Json
@@ -54,9 +36,6 @@ exports.listar = function(req, res) {
             //}
           }
         }
-
-      console.log("Hay " + newcount + " Preguntas Sin respuestas");
-    //res.render('views/estadisticas.ejs',{errors: errors});
-    //res.redirect("/estadisticas.ejs");
-    })
+   
+    }).then(res.render('estadisticas/estadisticas.ejs', { newcount:0, errors:[]}))
 };
