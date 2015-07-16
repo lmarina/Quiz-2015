@@ -25,7 +25,7 @@ router.get('/logout',                      sessionController.destroy); //Destrui
 // Definicion de rutas de  /quizes
 
 router.get('/quizes',                      quizController.index);
-router.get('/quizes/estadisticas',          estadisticasController.listar);
+router.get('/quizes/estadisticas',          estadisticasController.calculate,estadisticasController.listar );
 router.get('/quizes/:quizId(\\d+)',        quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 router.get('/quizes/new',                  sessionController.loginRequired, quizController.new);
